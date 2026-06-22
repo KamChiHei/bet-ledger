@@ -63,12 +63,23 @@ async function createWindow() {
     autoHideMenuBar: true,
     webPreferences: { contextIsolation: true, nodeIntegration: false, sandbox: true }
   });
+
+  const readyToShow = new Promise((resolve) => {
+    mainWindow.once("ready-to-show", resolve);
+  });
+
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     if (url.startsWith("https://")) shell.openExternal(url);
     return { action: "deny" };
   });
+
   await mainWindow.loadURL(`http://${HOST}:${PORT}`);
-  mainWindow.once("ready-to-show", () => mainWindow.show());
+  await Promise.race([
+    readyToShow,
+    new Promise((resolve) => setTimeout(resolve, 3000))
+  ]);
+  mainWindow.show();
+  mainWindow.focus();
 }
 
 app.whenReady().then(async () => {
