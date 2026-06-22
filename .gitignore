@@ -2,3 +2,5 @@ node_modules
 .next
 .env
 prisma/*.db*
+desktop-dist
+release

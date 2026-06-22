@@ -1,1 +1,84 @@
-{"name":"bet-ledger","version":"1.0.0","private":true,"scripts":{"dev":"next dev","build":"next build","start":"next start","lint":"next lint","db:push":"prisma db push","db:seed":"tsx prisma/seed.ts"},"dependencies":{"@next/swc-win32-x64-msvc":"14.2.33","@prisma/client":"^5.22.0","date-fns":"^4.1.0","lucide-react":"^0.468.0","next":"^14.2.21","papaparse":"^5.4.1","react":"^18.3.1","react-dom":"^18.3.1","recharts":"^2.15.0","zod":"^3.24.1"},"devDependencies":{"@types/node":"^22.10.2","@types/papaparse":"^5.3.15","@types/react":"^18.3.18","@types/react-dom":"^18.3.5","autoprefixer":"^10.4.20","postcss":"^8.4.49","prisma":"^5.22.0","tailwindcss":"^3.4.17","tsx":"^4.19.2","typescript":"^5.7.2"},"prisma":{"seed":"tsx prisma/seed.ts"}}
+{
+  "name": "bet-ledger",
+  "version": "1.1.0",
+  "private": true,
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:push": "prisma db push",
+    "db:seed": "tsx prisma/seed.ts",
+    "desktop:prepare": "node scripts/prepare-desktop.mjs",
+    "desktop:build": "npm run build && npm run desktop:prepare && electron-builder --win nsis portable",
+    "desktop:dir": "npm run build && npm run desktop:prepare && electron-builder --dir"
+  },
+  "dependencies": {
+    "@next/swc-win32-x64-msvc": "14.2.33",
+    "@prisma/client": "^5.22.0",
+    "date-fns": "^4.1.0",
+    "lucide-react": "^0.468.0",
+    "next": "^14.2.21",
+    "papaparse": "^5.4.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "recharts": "^2.15.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/papaparse": "^5.3.15",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "autoprefixer": "^10.4.20",
+    "electron": "^31.7.7",
+    "electron-builder": "^26.0.12",
+    "postcss": "^8.4.49",
+    "prisma": "^5.22.0",
+    "tailwindcss": "^3.4.17",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "build": {
+    "appId": "com.kamchihei.betledger",
+    "productName": "投注盈亏仪表盘",
+    "asar": true,
+    "files": [
+      "electron/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "desktop-dist/next-app",
+        "to": "next-app"
+      },
+      {
+        "from": "desktop-dist/template.db",
+        "to": "template.db"
+      }
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "artifactName": "BetLedger-${version}-${arch}-Installer.${ext}"
+    },
+    "portable": {
+      "artifactName": "BetLedger-${version}-${arch}-Portable.${ext}"
+    }
+  }
+}
