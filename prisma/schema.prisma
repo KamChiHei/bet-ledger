@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Bet {
+  id           Int      @id @default(autoincrement())
+  date         DateTime
+  sport        String
+  event        String
+  selection    String
+  type         String
+  odds         Float
+  stake        Float
+  status       String
+  returnAmount Float    @default(0)
+  profit       Float    @default(0)
+  roi          Float    @default(0)
+  notes        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Settings {
+  id              Int    @id @default(1)
+  initialBankroll Float  @default(5000)
+  currency        String @default("MOP")
+}

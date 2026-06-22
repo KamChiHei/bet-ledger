@@ -1,0 +1,1 @@
+import "./globals.css"; export const metadata={title:"投注盈亏仪表盘",description:"个人投注记账与复盘工具"}; export default function Layout({children}:{children:React.ReactNode}){return <html lang="zh-CN"><body>{children}</body></html>}

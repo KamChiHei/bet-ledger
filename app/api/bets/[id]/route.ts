@@ -1,0 +1,3 @@
+import { prisma } from "@/lib/prisma"; import { betSchema,calculate } from "@/lib/bets"; import { NextResponse } from "next/server";
+export async function PUT(req:Request,{params}:{params:{id:string}}){const p=betSchema.safeParse(await req.json());if(!p.success)return NextResponse.json({error:p.error.flatten()},{status:400});const x=p.data,{profit,roi}=calculate(x.stake,x.odds,x.status);return NextResponse.json(await prisma.bet.update({where:{id:+params.id},data:{...x,profit,roi}}));}
+export async function DELETE(_:Request,{params}:{params:{id:string}}){await prisma.bet.delete({where:{id:+params.id}});return new NextResponse(null,{status:204});}
